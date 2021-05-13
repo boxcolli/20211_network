@@ -310,10 +310,11 @@ int testway(char board[17][17], int x, int y, int w, struct BSP bs[2], struct MS
     }
     if (tw[0] == T_CLO && tw[1] == T_CLO) // both stuck
         return T_CLO;
-    /*
-    if (tw[0] == T_BS3 && tw[1] == T_BS3) // BS=3 with no additional MS
+    if (tw[0] == T_BS3 && tw[1] == T_BS3) { // BS=3 with no additional MS
+        if (ms[0].abs[0] == A_ILLEG && ms[1].abs[0] == A_ILLEG)
+            return T_CLO;
         return T_BS3;
-    */
+    }
     if (tw[0] == T_BS4 && tw[1] == T_BS4) // BS=4 with no additional MS
         return T_BS4;
 
@@ -327,10 +328,6 @@ int testway(char board[17][17], int x, int y, int w, struct BSP bs[2], struct MS
             return T_UN2;
         return T_UNK; // OP3 & OP3, OP3 & OP4
     case 3:
-        if (ms[0].abs[0] == A_ILLEG && ms[1].abs[1] == A_ILLEG) // WEBBBEW almost closed
-            return T_CLO;
-        if (tw[0] == T_BS3 && tw[1] == T_BS3) // BS=3 with no additional MS
-            return T_BS3;
         if (tw[0] == T_CLO || tw[1] == T_CLO) // CLO & OP4
             return T_UN1;  // one T_OP4
         if (tw[0] == T_BS3 || tw[1] == T_BS3) // BS3 & OP4
