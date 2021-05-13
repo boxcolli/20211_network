@@ -310,8 +310,11 @@ int testway(char board[17][17], int x, int y, int w, struct BSP bs[2], struct MS
     }
     if (tw[0] == T_CLO && tw[1] == T_CLO) // both stuck
         return T_CLO;
-    if (tw[0] == T_BS3 && tw[1] == T_BS3) // BS=3 with no additional MS
+    if (tw[0] == T_BS3 && tw[1] == T_BS3) { // BS=3 with no additional MS
+        if (ms[0].abs[0] == A_ILLEG && ms[1].abs[0] == A_ILLEG)
+            return T_CLO;
         return T_BS3;
+    }
     if (tw[0] == T_BS4 && tw[1] == T_BS4) // BS=4 with no additional MS
         return T_BS4;
 
@@ -342,15 +345,18 @@ int testmargin(int bslen, struct MSP* msp)
     // going L6
     if (msp->abs[l6pos] == A_BLACK)
             return T_CLO;
+
     // too less black
     switch (mslen) {
     case 1:
     case 2:
         return T_CLO;
     }
+
     // no black found in MS
     if (bslen == mslen)
         return (bslen == 3)? T_BS3 : T_BS4;
+    
     // final touch
     switch (mslen) {
     case 3:
